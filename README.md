@@ -1,1 +1,1 @@
-# soundcloud-clone-fe
+### Next.js + MUI + TypeScript
