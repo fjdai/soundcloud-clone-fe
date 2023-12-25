@@ -2,11 +2,11 @@
 import WaveTrack from "@/components/track/wave.track";
 import Container from "@mui/material/Container";
 
+
 const DetailTrackPage = (props: any) => {
 
     return (
         <Container>
-
             <div>
                 <WaveTrack />
             </div>
@@ -15,3 +15,4 @@ const DetailTrackPage = (props: any) => {
 }
 
 export default DetailTrackPage;
+
