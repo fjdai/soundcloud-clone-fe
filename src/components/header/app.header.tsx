@@ -20,6 +20,7 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -62,6 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+    const { data: session } = useSession();
+
     const router = useRouter();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -113,7 +116,10 @@ export default function AppHeader() {
                     Profile
                 </Link>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={() => {
+                handleMenuClose();
+                signOut();
+            }}>Logout</MenuItem>
         </Menu>
     );
 
@@ -212,14 +218,23 @@ export default function AppHeader() {
                                 textDecoration: "unset"
                             }
                         }}>
-                            <Link href="/playlist">Playlists</Link>
-                            <Link href="/like">Likes</Link>
-                            <Avatar
-                                onClick={handleProfileMenuOpen}
-                            >
-                                GD
-                            </Avatar>
-
+                            {session ?
+                                <>
+                                    <Link href="/playlist">Playlists</Link>
+                                    <Link href="/like">Likes</Link>
+                                    <Avatar
+                                        onClick={handleProfileMenuOpen}
+                                    >
+                                        GD
+                                    </Avatar>
+                                </>
+                                :
+                                <>
+                                    <Link href={"#"}
+                                        onClick={() => signIn()}
+                                    >Login</Link>
+                                </>
+                            }
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
@@ -238,6 +253,6 @@ export default function AppHeader() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-        </Box>
+        </Box >
     );
 }
